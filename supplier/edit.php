@@ -1,0 +1,174 @@
+<?php  
+error_reporting(E_ERROR | E_PARSE);
+ $connect = mysqli_connect("localhost", "root", "", "agri_shop");  
+ if(isset($_POST["back"])) 
+ {
+	 header("location:home.php");
+	 
+ }
+ 
+ if(isset($_POST["insert"]))  
+ {  
+if((isset($_POST["name"]))&&(isset($_POST["price"]))&&(isset($_POST["kg"])))
+{    
+{
+
+$name=$_POST['name'];
+$price=$_POST['price'];
+$kg=$_POST['kg'];
+
+
+$emailval = '/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,4})$/';
+$mob="/^[1-9][0-9]*$/";
+
+if(ctype_alpha(str_replace(' ', '', $name)) === false)
+{
+$msg = "Name must contain letters and spaces only";
+print '<script>alert(" '.$msg.'");</script>';
+}
+else if(!preg_match($mob, $price))
+{
+$msg="Please enter a valid price number";
+print '<script>alert(" '.$msg.'");</script>';
+}
+else
+{
+$query=mysqli_query($connect,"SELECT `id` FROM `supplier_id` WHERE 1 ") or die(mysqli_error($connect));
+$row=mysqli_fetch_array($query);
+$sid=$row['id'];
+
+
+//if($degree!=NULL)
+{
+
+//if($sid==NULL)
+{
+	//if($age>=25)
+	{
+
+$query=mysqli_query($connect,"SELECT `price` FROM `added_items` WHERE `name`='$name' && `supplier_id`='$sid' ") or die(mysqli_error($connect));
+$row=mysqli_fetch_array($query);
+$price1=$row['price'];
+
+if($price1!=NULL)
+{
+ $query = "UPDATE `added_items` SET `price`='$price', `quantity`='$kg' WHERE `name`='$name' && `supplier_id`='$sid'";
+
+ if(mysqli_query($connect, $query))  
+      {  
+   
+print '<script>alert("Agri Products Item updated successfully  ,Thankyou");</script>';
+	  }
+	  else{
+		
+print '<script>alert("Agri Products Item Not Present  ,Thankyou");</script>';
+	    
+		  
+	  }
+	}
+	else{
+print '<script>alert("Agri Products Item Not Present  ,Thankyou");</script>';
+		
+		
+	}
+}
+}
+
+}
+
+}
+}
+
+
+}
+    
+
+else{
+	     echo ' <script language="javascript" type="text/javascript">
+alert("Please fill all fields");
+parent.document.location="items.php";
+</script>';
+}	
+ }  
+ ?>  
+ <!DOCTYPE html>  
+ <html>  
+      
+	  <head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+     <link href="student_reg.css" type="text/css" rel="stylesheet">
+    
+	<title>Edit Groceries</title>
+<style>     
+hr { 
+  display: block;
+  margin-top: 0.5em;
+  margin-bottom: 0.5em;
+  margin-left: auto;
+  margin-right: auto;
+  border-style: inset;
+  border-width: 10px;
+} </style>
+<form method="POST" action="items.php">
+	
+     <input type="submit" class="button" name="back" value="Back">
+	 </form>
+	
+ <h3 align="center" color="red">Edit Groceries</h3>  	 
+	 </head>  
+      <body>  
+          
+		   
+		 
+    
+     <br />  <hr><br><br>
+     <form method="post" enctype="multipart/form-data" id="form" >  
+     <div class="full">
+     <div class="part">
+  
+  
+      <label>Agri Products Name</label>:
+  <select name="name" form="form">
+  
+  <option value="Brown Rice">BROWN RICE</option>
+  <option value="Basmati Rice">BASMATI RICE</option>
+  <option value="Red Rice">RED RICE</option>
+  <option value="BAMBOO Rice">BAMBOO RICE</option>
+  <option value="Mogra Rice">MOGRA RICE</option>
+  
+  <option value="Samba Rice">SAMBA RICE</option>
+  
+  <option value="Wheat">WHEAT</option>
+  
+  <option value="Maida">MAIDA</option>
+  <option value="Atta">ATTA</option>
+  <option value="Dal">DAL</option>
+  <option value="Coffee">COFFEE</option>
+  
+  <option value="Tea">TEA</option>
+  <option value="Sugar">SUGAR</option>
+  <option value="Coriander Seeds">CORIANDER SEEDS</option>
+  <option value="Mustard Seeds">MUSTARD SEEDS</option>
+
+  <option value="Sesame Seeds">SESAME SEEDS</option>
+  <option value="Turmeric Powder">TURMERIC POWDER</option>
+  
+  <option value="Baking Soda">BAKING SODA</option>
+  <option value="Milk">MILK</option>
+  
+  <option value="Panneer">PANNEER</option>
+  <option value="Palm Oil">PALM OIL</option>
+<option value="Sunflower Oil">SUNFLOWER OIL</option>
+<option value="Gingely Oil">GINGELY OIL</option>
+<option value="Ground Nut Oil">GROUND NUT OIL</option>
+
+ </select>
+ <br><br>
+	 <label>Price per KG/litre</label>:<input type="text" name="price" required><br><br>
+	 <label>Total Kg/litre in Hand</label>:<input type="text" name="kg" required><br><br>
+     <center> 
+	 <input type="submit" class="button" name ="insert" value ="submit"></center>
+     </form>
+	 
+	 </html>
